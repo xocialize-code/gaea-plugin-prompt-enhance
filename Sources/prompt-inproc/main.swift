@@ -59,8 +59,13 @@ let result = try await enhancer.enhance(prompt, profile: profile, task: .textToI
 }
 let run = seconds(since: clock)
 var generated = 0
-if let repo = backbone.model.weightsRepo, let folder = ModelStore(root: modelsRoot).directory(for: repo),
-   let tokenizer = try? await AutoTokenizer.from(modelFolder: folder) {
+// The tokenizer sits in the flat store layout or in a hub cache's snapshots/<commit>/.
+let store = ModelStore(root: modelsRoot)
+let folder = backbone.model.weightsRepo.flatMap { repo in
+    [store.directory(for: repo), store.snapshotDirectory(for: repo, revision: "main")].compactMap { $0 }
+        .first { FileManager.default.fileExists(atPath: $0.appending(path: "tokenizer.json").path) }
+}
+if let folder, let tokenizer = try? await AutoTokenizer.from(modelFolder: folder) {
     generated = answers.reduce(0) { $0 + tokenizer.encode(text: $1, addSpecialTokens: false).count }
 }
 let decode = calls
