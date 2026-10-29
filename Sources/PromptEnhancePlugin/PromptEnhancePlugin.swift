@@ -141,7 +141,7 @@ public let promptEnhancePlugin = GaeaPluginDefinition(
     version: "0.1.0",
     minGaea: "0.5.0",
     team: "CFZS6RXUCP",
-    repo: "https://github.com/xocialize/gaea-plugin-prompt-enhance",
+    repo: "https://github.com/xocialize-code/gaea-plugin-prompt-enhance",
     title: "Prompt enhancer",
     summary: "Rewrites short prompts into the captions image models are trained on, with each model's own profile "
         + "(prompt-enhance-kit), on Qwen3.5 4B and 9B (Apache-2.0). Gaea calls it before an image model runs (prompt_enhance).",

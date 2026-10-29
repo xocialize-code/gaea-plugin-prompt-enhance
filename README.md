@@ -1,12 +1,12 @@
 # gaea-plugin-prompt-enhance
 
-The LLM plugin for [Gaea](https://github.com/xocialize/gaea): prompt enhancement. It rewrites a short prompt into the
+The LLM plugin for [Gaea](https://github.com/xocialize-code/gaea): prompt enhancement. It rewrites a short prompt into the
 caption an image model was trained on, with that model's own profile from
 [prompt-enhance-kit](https://github.com/xocialize/prompt-enhance-kit-swift), on Qwen3.5 (Apache-2.0) through
 [mlx-qwen-llm-swift](https://github.com/xocialize/mlx-qwen-llm-swift). Add it by its repo URL:
 
 ```bash
-gaea plugins add https://github.com/xocialize/gaea-plugin-prompt-enhance
+gaea plugins add https://github.com/xocialize-code/gaea-plugin-prompt-enhance
 ```
 
 ## What it does
@@ -52,7 +52,7 @@ swift build -c release --product prompt-inproc && scripts/golden.sh <out-dir>
 `golden.sh` runs every profile's rewrite greedy over GPP and in-process (`prompt-inproc`: MLXServeEngine, the same
 backbone and enhancer), and compares the texts. `scripts/release.sh` builds, checks, notarizes with the fleet's
 `mlx-notary` profile and publishes the GitHub release; see the
-[demo plugin](https://github.com/xocialize/gaea-plugin-demo) for signing and CI secrets.
+[demo plugin](https://github.com/xocialize-code/gaea-plugin-demo) for signing and CI secrets.
 
 ## Licence
 
