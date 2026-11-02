@@ -138,7 +138,7 @@ let params: JSONValue = [
 
 public let promptEnhancePlugin = GaeaPluginDefinition(
     id: "com.xocialize.gaea.prompt-enhance",
-    version: "0.1.0",
+    version: "0.1.1",
     minGaea: "0.5.0",
     team: "CFZS6RXUCP",
     repo: "https://github.com/xocialize-code/gaea-plugin-prompt-enhance",
