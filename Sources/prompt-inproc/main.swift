@@ -10,8 +10,8 @@ import Tokenizers
 // MLXServeEngine in this process, with the plugin's sampling. Prints one JSON line: the text, the outcome, timings and
 // the tokens. Not part of the plugin bundle.
 //
-//   prompt-inproc --profile <id> --prompt <text> [--mode always|auto] [--temperature 0] [--seed 42]
-//                 [--width W --height H] [--models-root <dir>]
+//   prompt-inproc --profile <id> --prompt <text> [--task textToImage|imageEdit] [--mode always|auto]
+//                 [--temperature 0] [--seed 42] [--width W --height H] [--models-root <dir>]
 
 var args = Array(CommandLine.arguments.dropFirst())
 func option(_ name: String) -> String? {
@@ -30,6 +30,7 @@ guard let id = option("--profile"), let profile = library.profile(id: id), let p
     exit(2)
 }
 let mode: EnhanceMode = option("--mode") == "auto" ? .auto : .always
+let task: EnhanceTask = option("--task") == "imageEdit" ? .imageEdit : .textToImage
 let temperature = Double(option("--temperature") ?? "") ?? 0
 let seed = UInt64(option("--seed") ?? "") ?? 42
 let target = option("--width").flatMap(Int.init).flatMap { w in option("--height").flatMap(Int.init).map { (width: w, height: $0) } }
@@ -50,7 +51,7 @@ let prepare = seconds(since: clock)
 var answers: [String] = [], calls = 0.0
 clock = ContinuousClock.now
 let enhancer = PromptEnhancer(parameters: parameters(temperature: temperature, seed: seed))
-let result = try await enhancer.enhance(prompt, profile: profile, task: .textToImage, mode: mode, targetSize: target) { request in
+let result = try await enhancer.enhance(prompt, profile: profile, task: task, mode: mode, targetSize: target) { request in
     let call = ContinuousClock.now
     let response = try await engine.run(request, package: package) as! LLMResponse
     calls += seconds(since: call)

@@ -28,9 +28,18 @@ gaea plugins add https://github.com/xocialize-code/gaea-plugin-prompt-enhance
 | `mage-flow` | mage-flow, mage-flow-turbo | optional | 4B |
 | `sensenova-u1.5` | the SenseNova U1.5 models | recommended; answers Render JSON | 9B |
 | `moss-image` | moss-image-sft, moss-image-base | optional; answers a layout for a canvas | 9B |
+| `fibo2` | fibo-2-dev | recommended, at any length; answers one VGL caption (JSON, 2,900 to 6,200 characters) | 9B |
 
 In Gaea, the image normalizer runs the rewrite before the image model, and reports it in
 `effective.model_params.prompt_enhancement`. `image.enhance_prompt` previews it without generating.
+
+- **Edits.** The backbones read text only, so through Gaea an edit's instruction goes as typed (`needs_vision`).
+  `fibo2` is the one profile that can rewrite an edit from the words alone, into the imperative form Fibo 2.0 was
+  trained on (`{"edit_instruction": "…"}`): the helper does it when called with `task: imageEdit`, but Gaea doesn't
+  call it for edits yet. That needs the manifest to say which tasks are text-only (`text_only_tasks`, GPP-1 §4.4,
+  GaeaPluginKit 0.16.0), which waits on mlx-qwen-llm-swift building with a newer engine.
+- **Sampling.** Gaea sends `temperature` 0.7. A profile's own sampler wins where it sets one: `fibo2` runs at 0.2 and
+  `moss-image` at 0.3, each with up to 4,096 tokens.
 
 ## Build and check locally
 
@@ -50,7 +59,7 @@ swift build -c release --product prompt-inproc && scripts/golden.sh <out-dir>
 ```
 
 `golden.sh` runs every profile's rewrite greedy over GPP and in-process (`prompt-inproc`: MLXServeEngine, the same
-backbone and enhancer), and compares the texts. `scripts/release.sh` builds, checks, notarizes with the fleet's
+backbone and enhancer), and compares the texts: a generate for each profile, and `fibo2`'s edit instruction. `scripts/release.sh` builds, checks, notarizes with the fleet's
 `mlx-notary` profile and publishes the GitHub release; see the
 [demo plugin](https://github.com/xocialize-code/gaea-plugin-demo) for signing and CI secrets.
 

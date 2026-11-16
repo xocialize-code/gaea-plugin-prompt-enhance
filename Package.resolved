@@ -1,5 +1,5 @@
 {
-  "originHash" : "25a9e3493e2bb57c296d32b840f736c5bf582364569c78af618c2ebd64a71c22",
+  "originHash" : "001cfae5258b6c1d4c242ff885f9ea69031774bd069d461223d4f2cab0bd476c",
   "pins" : [
     {
       "identity" : "designscaffold",
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/xocialize/prompt-enhance-kit-swift.git",
       "state" : {
-        "revision" : "b7494b655c1b7900cd4aa8fe0c75f90808fe6a4f",
-        "version" : "0.7.0"
+        "revision" : "771c24548d40f763aaff2653d8cc7deeb582bcb6",
+        "version" : "0.8.0"
       }
     },
     {

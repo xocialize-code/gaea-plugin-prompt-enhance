@@ -8,7 +8,8 @@ import PromptEnhanceKit
 
 // gaea-plugin-prompt-enhance: the LLM plugin (Gaea G-10, AB-T-0370). prompt-enhance-kit's image-model profiles rewrite a
 // short prompt into the caption a model was trained on, on Qwen3.5: the 4B for the prose profiles, the 9B for the
-// structured ones (SenseNova's Render JSON, MOSS-Image's layouts), as pixel-agency-image-engine runs them
+// structured ones (SenseNova's Render JSON, MOSS-Image's layouts, Fibo 2.0's VGL captions), as
+// pixel-agency-image-engine runs them
 // (PromptBackbones, KitPromptEnhancer).
 //
 // The profiles stay here. The manifest lists the facts Gaea needs to decide whether a prompt needs the model at all
@@ -138,7 +139,7 @@ let params: JSONValue = [
 
 public let promptEnhancePlugin = GaeaPluginDefinition(
     id: "com.xocialize.gaea.prompt-enhance",
-    version: "0.1.1",
+    version: "0.1.2",
     minGaea: "0.5.0",
     team: "CFZS6RXUCP",
     repo: "https://github.com/xocialize-code/gaea-plugin-prompt-enhance",

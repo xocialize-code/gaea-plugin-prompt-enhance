@@ -17,15 +17,16 @@ LOG=$OUT/golden.log; : > $LOG
 pass=0; fail=0
 say() { print -r -- "$*" | tee -a $LOG }
 
-# profile, backbone, prompt, [width height]
+# profile, backbone, prompt, [width height]; TASK=imageEdit rewrites an edit instruction (the case is named <profile>-edit)
 golden() {
-  local profile=$1 backbone=$2 prompt=$3 w=${4:-} h=${5:-}
-  local params='{"profile":"'$profile'","mode":"always","temperature":0'
+  local id=$1 backbone=$2 prompt=$3 w=${4:-} h=${5:-} task=${TASK:-textToImage}
+  local profile=$id; [[ $task == imageEdit ]] && profile=$id-edit
+  local params='{"profile":"'$id'","task":"'$task'","mode":"always","temperature":0'
   local size=(); [[ -n $w ]] && { params+=',"target_size":{"width":'$w',"height":'$h'}'; size=(--width $w --height $h) }
   params+='}'
   $CHECK $B --operation x-gaea.prompt.enhance --model $backbone --lane int4 --params $params --seed 42 --text "prompt=$prompt" \
     --models-root "$MODELS" --budget 64000000000 --timeout 600 --session $OUT/$profile.gpp > $OUT/$profile-gpp.log 2>&1
-  $INPROC --profile $profile --prompt "$prompt" --mode always --temperature 0 --seed 42 $size --models-root "$MODELS" \
+  $INPROC --profile $id --task $task --prompt "$prompt" --mode always --temperature 0 --seed 42 $size --models-root "$MODELS" \
     > $OUT/$profile-inproc.json 2>> $LOG
   python3 - "$OUT/$profile.gpp" "$OUT/$profile-inproc.json" "$profile" >> $LOG <<'EOF'
 import json, sys
@@ -51,5 +52,7 @@ golden z-image qwen3.5-4b "an old lighthouse at dusk"
 golden mage-flow qwen3.5-4b "a cat on a windowsill"
 golden sensenova-u1.5 qwen3.5-9b "a poster for a jazz festival in Lisbon" 1024 1024
 golden moss-image qwen3.5-9b "an infographic about the water cycle" 1024 1024
+golden fibo2 qwen3.5-9b "a fox in the snow"
+TASK=imageEdit golden fibo2 qwen3.5-9b "make the sky a deep red sunset and take the fence out"
 say "== $pass passed, $fail failed"
 exit $(( fail > 0 ))

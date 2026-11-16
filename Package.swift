@@ -19,7 +19,7 @@ let package = Package(
             ?? .package(url: "https://github.com/xocialize-code/gaea-plugin-kit.git", from: "0.3.0"),
         .package(url: "https://github.com/xocialize/mlx-engine-swift.git", from: "0.73.1"),
         .package(url: "https://github.com/xocialize/mlx-qwen-llm-swift.git", from: "0.6.2"),
-        .package(url: "https://github.com/xocialize/prompt-enhance-kit-swift.git", from: "0.7.0"),
+        .package(url: "https://github.com/xocialize/prompt-enhance-kit-swift.git", from: "0.8.0"), // the fibo2 profile
         // prompt-inproc counts the answers' tokens with the model's own tokenizer (mlx-qwen-llm-swift reports no usage).
         .package(url: "https://github.com/huggingface/swift-transformers", from: "1.2.1"),
     ],
