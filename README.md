@@ -22,7 +22,7 @@ gaea plugins add https://github.com/xocialize-code/gaea-plugin-prompt-enhance
 
 | Profile | Models | Policy | Backbone |
 |---|---|---|---|
-| `flux2-klein` | klein-4b, klein-4b-base | recommended (a prompt of 60+ words goes as typed) | 4B |
+| `flux2-klein` | klein-4b, klein-4b-base, klein-4b-rdm | recommended (a prompt of 60+ words goes as typed) | 4B |
 | `qwen-image` | qwen-image-flash | recommended (60+ words) | 4B |
 | `z-image` | z-image-turbo, z-image | optional (rewritten only with `prompt_enhance: on`) | 4B |
 | `mage-flow` | mage-flow, mage-flow-turbo | optional | 4B |
